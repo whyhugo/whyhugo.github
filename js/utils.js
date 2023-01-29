@@ -1,231 +1,457 @@
-/* global Fluid, CONFIG */
+/* global REDEFINE */
 
-window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+REDEFINE.initUtils = () => {
+  REDEFINE.utils = {
+    html_root_dom: document.querySelector("html"),
+    pageContainer_dom: document.querySelector(".page-container"),
+    pageTop_dom: document.querySelector(".page-main-content-top"),
+    firstScreen_dom: document.querySelector(".first-screen-container"),
+    scrollProgressBar_dom: document.querySelector(".scroll-progress-bar"),
+    pjaxProgressBar_dom: document.querySelector(".pjax-progress-bar"),
+    pjaxProgressIcon_dom: document.querySelector(".pjax-progress-icon"),
+    backToTopButton_dom: document.querySelector(".tool-scroll-to-top"),
 
-Fluid.utils = {
+    innerHeight: window.innerHeight,
+    pjaxProgressBarTimer: null,
+    prevScrollValue: 0,
+    fontSizeLevel: 0,
 
-  listenScroll: function(callback) {
-    var dbc = new Debouncer(callback);
-    window.addEventListener('scroll', dbc, false);
-    dbc.handleEvent();
-    return dbc;
-  },
+    isHasScrollProgressBar:
+      REDEFINE.theme_config.style.scroll.progress_bar.enable === true,
+    isHasScrollPercent:
+      REDEFINE.theme_config.style.scroll.percent.enable === true,
 
-  unlistenScroll: function(callback) {
-    window.removeEventListener('scroll', callback);
-  },
+    // Scroll Style Handle
+    styleHandleWhenScroll() {
+      const scrollTop =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const scrollHeight =
+        document.body.scrollHeight || document.documentElement.scrollHeight;
+      const clientHeight =
+        window.innerHeight || document.documentElement.clientHeight;
 
-  scrollToElement: function(target, offset) {
-    var of = jQuery(target).offset();
-    if (of) {
-      jQuery('html,body').animate({
-        scrollTop: of.top + (offset || 0),
-        easing   : 'swing'
-      });
-    }
-  },
+      const percent = Math.round(
+        (scrollTop / (scrollHeight - clientHeight)) * 100
+      );
 
-  elementVisible: function(element, offsetFactor) {
-    offsetFactor = offsetFactor && offsetFactor >= 0 ? offsetFactor : 0;
-    var rect = element.getBoundingClientRect();
-    var height = window.innerHeight || document.documentElement.clientHeight;
-    var top = rect.top;
-    return (top >= 0 && top <= height * (offsetFactor + 1))
-      || (top <= 0 && top >= -(height * offsetFactor) - rect.height);
-  },
-
-  waitElementVisible: function(selectorOrElement, callback, offsetFactor) {
-    var runningOnBrowser = typeof window !== 'undefined';
-    var isBot = (runningOnBrowser && !('onscroll' in window))
-      || (typeof navigator !== 'undefined' && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent));
-    if (!runningOnBrowser || isBot) {
-      return;
-    }
-
-    offsetFactor = offsetFactor && offsetFactor >= 0 ? offsetFactor : 0;
-
-    function waitInViewport(element) {
-      if (Fluid.utils.elementVisible(element, offsetFactor)) {
-        callback();
-        return;
+      if (this.isHasScrollProgressBar) {
+        const ProgressPercent = (
+          (scrollTop / (scrollHeight - clientHeight)) *
+          100
+        ).toFixed(3);
+        this.scrollProgressBar_dom.style.visibility =
+          percent === 0 ? "hidden" : "visible";
+        this.scrollProgressBar_dom.style.width = `${ProgressPercent}%`;
       }
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function(entries, ob) {
-          if (entries[0].isIntersecting) {
-            callback();
-            ob.disconnect();
-          }
-        }, {
-          threshold : [0],
-          rootMargin: (window.innerHeight || document.documentElement.clientHeight) * offsetFactor + 'px'
-        });
-        io.observe(element);
-      } else {
-        var wrapper = Fluid.utils.listenScroll(function() {
-          if (Fluid.utils.elementVisible(element, offsetFactor)) {
-            Fluid.utils.unlistenScroll(wrapper);
-            callback();
-          }
-        });
-      }
-    }
 
-    if (typeof selectorOrElement === 'string') {
-      this.waitElementLoaded(selectorOrElement, function(element) {
-        waitInViewport(element);
-      });
-    } else {
-      waitInViewport(selectorOrElement);
-    }
-  },
-
-  waitElementLoaded: function(selector, callback) {
-    var runningOnBrowser = typeof window !== 'undefined';
-    var isBot = (runningOnBrowser && !('onscroll' in window))
-      || (typeof navigator !== 'undefined' && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent));
-    if (!runningOnBrowser || isBot) {
-      return;
-    }
-
-    if ('MutationObserver' in window) {
-      var mo = new MutationObserver(function(records, ob) {
-        var ele = document.querySelector(selector);
-        if (ele) {
-          callback(ele);
-          ob.disconnect();
+      if (this.isHasScrollPercent) {
+        const percent_dom = this.backToTopButton_dom.querySelector(".percent");
+        if (percent === 0 || percent === undefined) {
+          this.backToTopButton_dom.classList.remove("show");
+        } else {
+          this.backToTopButton_dom.classList.add("show");
+          percent_dom.innerHTML = percent.toFixed(0);
         }
-      });
-      mo.observe(document, { childList: true, subtree: true });
-    } else {
-      document.addEventListener('DOMContentLoaded', function() {
-        var waitLoop = function() {
-          var ele = document.querySelector(selector);
-          if (ele) {
-            callback(ele);
-          } else {
-            setTimeout(waitLoop, 100);
-          }
-        };
-        waitLoop();
-      });
-    }
-  },
+      }
 
-  createScript: function(url, onload) {
-    var s = document.createElement('script');
-    s.setAttribute('src', url);
-    s.setAttribute('type', 'text/javascript');
-    s.setAttribute('charset', 'UTF-8');
-    s.async = false;
-    if (typeof onload === 'function') {
-      if (window.attachEvent) {
-        s.onreadystatechange = function() {
-          var e = s.readyState;
-          if (e === 'loaded' || e === 'complete') {
-            s.onreadystatechange = null;
-            onload();
-          }
-        };
+      // hide menu handle
+      if (scrollTop > this.prevScrollValue && scrollTop > this.innerHeight) {
+        this.pageTop_dom.classList.remove("hide");
       } else {
-        s.onload = onload;
+        this.pageTop_dom.classList.remove("hide");
       }
-    }
-    var ss = document.getElementsByTagName('script');
-    var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-    e.parentNode.insertBefore(s, e.nextSibling);
-  },
+      this.prevScrollValue = scrollTop;
+    },
 
-  createCssLink: function(url) {
-    var l = document.createElement('link');
-    l.setAttribute('rel', 'stylesheet');
-    l.setAttribute('type', 'text/css');
-    l.setAttribute('href', url);
-    var e = document.getElementsByTagName('link')[0]
-    || document.getElementsByTagName('head')[0]
-    || document.head || document.documentElement;
-    e.parentNode.insertBefore(l, e);
-  },
+    // register window scroll event
+    registerWindowScroll() {
+      window.addEventListener("scroll", () => {
+        // style handle when scroll
+        if (this.isHasScrollPercent || this.isHasScrollProgressBar) {
+          this.styleHandleWhenScroll();
+        }
 
-  loadComments: function(selector, loadFunc) {
-    var ele = document.querySelector('#comments[lazyload]');
-    if (ele) {
-      var callback = function() {
-        loadFunc();
-        ele.removeAttribute('lazyload');
+        // TOC scroll handle
+        if (
+          REDEFINE.theme_config.toc.enable &&
+          REDEFINE.utils.hasOwnProperty("updateActiveTOCLink")
+        ) {
+          REDEFINE.utils.updateActiveTOCLink();
+        }
+
+        // menu shrink
+        REDEFINE.utils.menuShrink.menuShrink();
+      });
+    },
+
+    // toggle show tools list
+    toggleShowToolsList() {
+      document
+        .querySelector(".tool-toggle-show")
+        .addEventListener("click", () => {
+          document
+            .querySelector(".unfolded-tools-list")
+            .classList.toggle("show");
+        });
+    },
+
+    // global font adjust
+    globalFontAdjust() {
+      const fontSize = document.defaultView.getComputedStyle(
+        document.body
+      ).fontSize;
+      const fs = parseFloat(fontSize);
+
+      const initFontSize = () => {
+        const styleStatus = REDEFINE.getStyleStatus();
+        if (styleStatus) {
+          this.fontSizeLevel = styleStatus.fontSizeLevel;
+          setFontSize(this.fontSizeLevel);
+        }
       };
-      Fluid.utils.waitElementVisible(selector, callback, CONFIG.lazyload.offset_factor);
-    } else {
-      loadFunc();
-    }
-  },
 
-  getBackgroundLightness(selectorOrElement) {
-    var ele = selectorOrElement;
-    if (typeof selectorOrElement === 'string') {
-      ele = document.querySelector(selectorOrElement);
-    }
-    var view = ele.ownerDocument.defaultView;
-    if (!view) {
-      view = window;
-    }
-    var rgbArr = view.getComputedStyle(ele).backgroundColor.replace(/rgba*\(/, '').replace(')', '').split(/,\s*/);
-    if (rgbArr.length < 3) {
-      return 0;
-    }
-    var colorCast = (0.213 * rgbArr[0]) + (0.715 * rgbArr[1]) + (0.072 * rgbArr[2]);
-    return colorCast === 0 || colorCast > 255 / 2 ? 1 : -1;
-  },
+      const setFontSize = (fontSizeLevel) => {
+        this.html_root_dom.style.fontSize = `${
+          fs * (1 + fontSizeLevel * 0.05)
+        }px`;
+        REDEFINE.styleStatus.fontSizeLevel = fontSizeLevel;
+        REDEFINE.setStyleStatus();
+      };
 
-  retry(handler, interval, times) {
-    if (times <= 0) {
-      return;
-    }
-    var next = function() {
-      if (--times >= 0 && !handler()) {
-        setTimeout(next, interval);
+      initFontSize();
+
+      document
+        .querySelector(".tool-font-adjust-plus")
+        .addEventListener("click", () => {
+          if (this.fontSizeLevel === 5) return;
+          this.fontSizeLevel++;
+          setFontSize(this.fontSizeLevel);
+        });
+
+      document
+        .querySelector(".tool-font-adjust-minus")
+        .addEventListener("click", () => {
+          if (this.fontSizeLevel <= 0) return;
+          this.fontSizeLevel--;
+          setFontSize(this.fontSizeLevel);
+        });
+    },
+
+    // toggle content area width
+    contentAreaWidthAdjust() {
+      const toolExpandDom = document.querySelector(".tool-expand-width");
+      const menuContentDom = document.querySelector(".menu-content");
+      const mainContentDom = document.querySelector(".main-content");
+      const iconDom = toolExpandDom.querySelector("i");
+
+      const defaultMaxWidth =
+        REDEFINE.theme_config.style.content_max_width || "1000px";
+      const expandMaxWidth = "90%";
+      let menuMaxWidth = defaultMaxWidth;
+
+      let isExpand = false;
+
+      if (
+        REDEFINE.theme_config.style.first_screen.enable === true &&
+        window.location.pathname === "/"
+      ) {
+        menuMaxWidth = parseInt(defaultMaxWidth) * 1.2 + "px";
       }
-    };
-    setTimeout(next, interval);
-  },
 
-};
+      const setPageWidth = (isExpand) => {
+        REDEFINE.styleStatus.isExpandPageWidth = isExpand;
+        REDEFINE.setStyleStatus();
+        if (isExpand) {
+          iconDom.classList.remove("fa-expand");
+          iconDom.classList.add("fa-compress");
+          menuContentDom.style.maxWidth = expandMaxWidth;
+          mainContentDom.style.maxWidth = expandMaxWidth;
+        } else {
+          iconDom.classList.remove("fa-compress");
+          iconDom.classList.add("fa-expand");
+          menuContentDom.style.maxWidth = menuMaxWidth;
+          mainContentDom.style.maxWidth = defaultMaxWidth;
+        }
+      };
 
-/**
- * Handles debouncing of events via requestAnimationFrame
- * @see http://www.html5rocks.com/en/tutorials/speed/animations/
- * @param {Function} callback The callback to handle whichever event
- */
-function Debouncer(callback) {
-  this.callback = callback;
-  this.ticking = false;
-}
-Debouncer.prototype = {
-  constructor: Debouncer,
+      const initPageWidth = () => {
+        const styleStatus = REDEFINE.getStyleStatus();
+        if (styleStatus) {
+          isExpand = styleStatus.isExpandPageWidth;
+          setPageWidth(isExpand);
+        }
+      };
 
-  /**
-   * dispatches the event to the supplied callback
-   * @private
-   */
-  update: function() {
-    this.callback && this.callback();
-    this.ticking = false;
-  },
+      initPageWidth();
 
-  /**
-   * ensures events don't get stacked
-   * @private
-   */
-  requestTick: function() {
-    if (!this.ticking) {
-      requestAnimationFrame(this.rafCallback || (this.rafCallback = this.update.bind(this)));
-      this.ticking = true;
-    }
-  },
+      toolExpandDom.addEventListener("click", () => {
+        isExpand = !isExpand;
+        setPageWidth(isExpand);
+      });
+    },
 
-  /**
-   * Attach this as the event listeners
-   */
-  handleEvent: function() {
-    this.requestTick();
-  }
+    // go comment anchor
+    goComment() {
+      this.goComment_dom = document.querySelector(".go-comment");
+      if (this.goComment_dom) {
+        this.goComment_dom.addEventListener("click", () => {
+          document.querySelector("#comment-anchor").scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      }
+    },
+
+    // get dom element height
+    getElementHeight(selectors) {
+      const dom = document.querySelector(selectors);
+      return dom ? dom.getBoundingClientRect().height : 0;
+    },
+
+    // init first screen height
+    initFirstScreenHeight() {
+      this.firstScreen_dom &&
+        (this.firstScreen_dom.style.height = this.innerHeight + "px");
+    },
+
+    // init page height handle
+    initPageHeightHandle() {
+      if (this.firstScreen_dom) return;
+      const temp_h1 = this.getElementHeight(".page-main-content-top");
+      const temp_h2 = this.getElementHeight(".page-main-content-middle");
+      const temp_h3 = this.getElementHeight(".page-main-content-bottom");
+      const allDomHeight = temp_h1 + temp_h2 + temp_h3;
+      const innerHeight = window.innerHeight;
+      const pb_dom = document.querySelector(".page-main-content-bottom");
+      if (allDomHeight < innerHeight) {
+        const marginTopValue = Math.floor(innerHeight - allDomHeight);
+        if (marginTopValue > 0) {
+          pb_dom.style.marginTop = `${marginTopValue - 2}px`;
+        }
+      }
+    },
+
+    // big image viewer
+    imageViewer() {
+      let isBigImage = false;
+
+      const showHandle = (maskDom, isShow) => {
+        document.body.style.overflow = isShow ? "hidden" : "auto";
+        if (isShow) {
+          maskDom.classList.add("active");
+        } else {
+          maskDom.classList.remove("active");
+        }
+      };
+
+      const imageViewerDom = document.querySelector(".image-viewer-container");
+      const targetImg = document.querySelector(".image-viewer-container img");
+      imageViewerDom &&
+        imageViewerDom.addEventListener("click", () => {
+          isBigImage = false;
+          showHandle(imageViewerDom, isBigImage);
+        });
+
+      const imgDoms = document.querySelectorAll(".markdown-body img");
+
+      if (imgDoms.length) {
+        imgDoms.forEach((img) => {
+          img.addEventListener("click", () => {
+            isBigImage = true;
+            showHandle(imageViewerDom, isBigImage);
+            targetImg.setAttribute("src", img.getAttribute("src"));
+          });
+        });
+      } else {
+        this.pageContainer_dom.removeChild(imageViewerDom);
+      }
+    },
+
+    // set how long ago language
+    setHowLongAgoLanguage(p1, p2) {
+      return p2.replace(/%s/g, p1);
+    },
+
+    getHowLongAgo(timestamp) {
+      const l = REDEFINE.language_ago;
+
+      const __Y = Math.floor(timestamp / (60 * 60 * 24 * 30) / 12);
+      const __M = Math.floor(timestamp / (60 * 60 * 24 * 30));
+      const __W = Math.floor(timestamp / (60 * 60 * 24) / 7);
+      const __d = Math.floor(timestamp / (60 * 60 * 24));
+      const __h = Math.floor((timestamp / (60 * 60)) % 24);
+      const __m = Math.floor((timestamp / 60) % 60);
+      const __s = Math.floor(timestamp % 60);
+
+      if (__Y > 0) {
+        return this.setHowLongAgoLanguage(__Y, l.year);
+      } else if (__M > 0) {
+        return this.setHowLongAgoLanguage(__M, l.month);
+      } else if (__W > 0) {
+        return this.setHowLongAgoLanguage(__W, l.week);
+      } else if (__d > 0) {
+        return this.setHowLongAgoLanguage(__d, l.day);
+      } else if (__h > 0) {
+        return this.setHowLongAgoLanguage(__h, l.hour);
+      } else if (__m > 0) {
+        return this.setHowLongAgoLanguage(__m, l.minute);
+      } else if (__s > 0) {
+        return this.setHowLongAgoLanguage(__s, l.second);
+      }
+    },
+
+    relativeTimeInHome() {
+      const post = document.querySelectorAll(
+        ".home-article-meta-info .home-article-date"
+      );
+      post &&
+        post.forEach((v) => {
+          const nowDate = Date.now();
+          const postDate = new Date(v.dataset.date.split(" GMT")[0]).getTime();
+          const finalDays = Math.floor(
+            (nowDate - postDate) / (60 * 60 * 24 * 1000)
+          );
+          if (finalDays < 7) {
+            v.innerHTML = this.getHowLongAgo(
+              Math.floor((nowDate - postDate) / 1000)
+            );
+          }
+        });
+    },
+
+    // loading progress bar start
+    pjaxProgressBarStart() {
+      this.pjaxProgressBarTimer && clearInterval(this.pjaxProgressBarTimer);
+      if (this.isHasScrollProgressBar) {
+        this.scrollProgressBar_dom.classList.add("hide");
+      }
+
+      this.pjaxProgressBar_dom.style.width = "0";
+      this.pjaxProgressIcon_dom.classList.add("show");
+
+      let width = 1;
+      const maxWidth = 99;
+
+      this.pjaxProgressBar_dom.classList.add("show");
+      this.pjaxProgressBar_dom.style.width = width + "%";
+
+      this.pjaxProgressBarTimer = setInterval(() => {
+        width += 5;
+        if (width > maxWidth) width = maxWidth;
+        this.pjaxProgressBar_dom.style.width = width + "%";
+      }, 100);
+    },
+
+    // loading progress bar end
+    pjaxProgressBarEnd() {
+      this.pjaxProgressBarTimer && clearInterval(this.pjaxProgressBarTimer);
+      this.pjaxProgressBar_dom.style.width = "100%";
+
+      const temp_1 = setTimeout(() => {
+        this.pjaxProgressBar_dom.classList.remove("show");
+        this.pjaxProgressIcon_dom.classList.remove("show");
+
+        if (this.isHasScrollProgressBar) {
+          this.scrollProgressBar_dom.classList.remove("hide");
+        }
+
+        const temp_2 = setTimeout(() => {
+          this.pjaxProgressBar_dom.style.width = "0";
+          clearTimeout(temp_1), clearTimeout(temp_2);
+        }, 200);
+      }, 200);
+    },
+
+
+
+    /*
+    calculateMaterialColors(hex) {
+      // Convert hex to RGB
+      hex = hex.replace(/#/g, "");
+      if (hex.length === 3) {
+        hex = hex
+          .split("")
+          .map(function (hex) {
+            return hex + hex;
+          })
+          .join("");
+      }
+      var result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})[\da-z]{0,0}$/i.exec(
+        hex
+      );
+      if (!result) {
+        return null;
+      }
+      var r = parseInt(result[1], 16);
+      var g = parseInt(result[2], 16);
+      var b = parseInt(result[3], 16);
+      (r /= 255), (g /= 255), (b /= 255);
+      var max = Math.max(r, g, b),
+        min = Math.min(r, g, b);
+      var h,
+        s,
+        l = (max + min) / 2;
+      if (max == min) {
+        h = s = 0;
+      } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r:
+            h = (g - b) / d + (g < b ? 6 : 0);
+            break;
+          case g:
+            h = (b - r) / d + 2;
+            break;
+          case b:
+            h = (r - g) / d + 4;
+            break;
+        }
+        h /= 6;
+      }
+      s = s * 100;
+      s = Math.round(s);
+      l = l * 100;
+      l = Math.round(l);
+      h = Math.round(360 * h);
+
+      // Compute primary, secondary, and tertiary colors
+      const primaryColor = `hsl(${h}, ${s}%, ${l}%)`;
+      const secondaryColor = `hsl(${h}, ${s - 15}%, ${l - 15}%)`;
+      const tertiaryColor = `hsl(${h}, ${s - 25}%, ${l - 25}%)`;
+      document.documentElement.style.setProperty('--primary-color-temp', primaryColor);
+      document.documentElement.style.setProperty('--secondary-color-temp', secondaryColor);
+      document.documentElement.style.setProperty('--tertiary-color-temp', tertiaryColor);
+    },*/
+  };
+
+  // init scroll
+  REDEFINE.utils.registerWindowScroll();
+
+  // toggle show tools list
+  REDEFINE.utils.toggleShowToolsList();
+
+  // global font adjust
+  REDEFINE.utils.globalFontAdjust();
+
+  // adjust content area width
+  REDEFINE.utils.contentAreaWidthAdjust();
+
+  // go comment
+  REDEFINE.utils.goComment();
+
+  // init page height handle
+  REDEFINE.utils.initPageHeightHandle();
+
+  // init first screen height
+  REDEFINE.utils.initFirstScreenHeight();
+
+  // big image viewer handle
+  REDEFINE.utils.imageViewer();
+
+  // set how long ago in home article block
+  REDEFINE.utils.relativeTimeInHome();
+
+  // calculate material colors
+  //REDEFINE.utils.calculateMaterialColors(REDEFINE.theme_config.style.primary_color);
 };
