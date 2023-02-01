@@ -1,14 +1,14 @@
 :root {
   --background-color: #fff;
   --second-background-color: #f2f2f2;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #323739;
   --second-text-color: #343a3c;
   --third-text-color: #5c6669;
   --fourth-text-color: #eaeced;
   --default-text-color: #373d3f;
   --border-color: #b3b3b3;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
@@ -39,14 +39,14 @@
   :root {
     --background-color: #fff;
     --second-background-color: #f2f2f2;
-    --primary-color: #a39a89;
+    --primary-color: #c99;
     --first-text-color: #323739;
     --second-text-color: #343a3c;
     --third-text-color: #5c6669;
     --fourth-text-color: #eaeced;
     --default-text-color: #373d3f;
     --border-color: #b3b3b3;
-    --selection-color: #aca495;
+    --selection-color: #d1a3a3;
     --shadow-color-1: rgba(0,0,0,0.08);
     --shadow-color-2: rgba(0,0,0,0.05);
     --shadow-hover-color: rgba(0,0,0,0.28);
@@ -78,14 +78,14 @@
   :root {
     --background-color: #202124;
     --second-background-color: #2a2c30;
-    --primary-color: #a39a89;
+    --primary-color: #c99;
     --first-text-color: #d2d2d7;
     --second-text-color: #cbcbd1;
     --third-text-color: #9595a2;
     --fourth-text-color: #242429;
     --default-text-color: #bebec6;
     --border-color: #4a4c53;
-    --selection-color: #aca495;
+    --selection-color: #d1a3a3;
     --shadow-color-1: rgba(255,255,255,0.08);
     --shadow-color-2: rgba(255,255,255,0.05);
     --shadow-hover-color: rgba(69,69,69,0.28);
@@ -116,14 +116,14 @@
 .light-mode {
   --background-color: #fff;
   --second-background-color: #f2f2f2;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #323739;
   --second-text-color: #343a3c;
   --third-text-color: #5c6669;
   --fourth-text-color: #eaeced;
   --default-text-color: #373d3f;
   --border-color: #b3b3b3;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
@@ -153,14 +153,14 @@
 .dark-mode {
   --background-color: #202124;
   --second-background-color: #2a2c30;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #d2d2d7;
   --second-text-color: #cbcbd1;
   --third-text-color: #9595a2;
   --fourth-text-color: #242429;
   --default-text-color: #bebec6;
   --border-color: #4a4c53;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(255,255,255,0.08);
   --shadow-color-2: rgba(255,255,255,0.05);
   --shadow-hover-color: rgba(69,69,69,0.28);
@@ -652,14 +652,14 @@ button {
 :root {
   --background-color: #fff;
   --second-background-color: #f2f2f2;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #323739;
   --second-text-color: #343a3c;
   --third-text-color: #5c6669;
   --fourth-text-color: #eaeced;
   --default-text-color: #373d3f;
   --border-color: #b3b3b3;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
@@ -690,14 +690,14 @@ button {
   :root {
     --background-color: #fff;
     --second-background-color: #f2f2f2;
-    --primary-color: #a39a89;
+    --primary-color: #c99;
     --first-text-color: #323739;
     --second-text-color: #343a3c;
     --third-text-color: #5c6669;
     --fourth-text-color: #eaeced;
     --default-text-color: #373d3f;
     --border-color: #b3b3b3;
-    --selection-color: #aca495;
+    --selection-color: #d1a3a3;
     --shadow-color-1: rgba(0,0,0,0.08);
     --shadow-color-2: rgba(0,0,0,0.05);
     --shadow-hover-color: rgba(0,0,0,0.28);
@@ -729,14 +729,14 @@ button {
   :root {
     --background-color: #202124;
     --second-background-color: #2a2c30;
-    --primary-color: #a39a89;
+    --primary-color: #c99;
     --first-text-color: #d2d2d7;
     --second-text-color: #cbcbd1;
     --third-text-color: #9595a2;
     --fourth-text-color: #242429;
     --default-text-color: #bebec6;
     --border-color: #4a4c53;
-    --selection-color: #aca495;
+    --selection-color: #d1a3a3;
     --shadow-color-1: rgba(255,255,255,0.08);
     --shadow-color-2: rgba(255,255,255,0.05);
     --shadow-hover-color: rgba(69,69,69,0.28);
@@ -767,14 +767,14 @@ button {
 .light-mode {
   --background-color: #fff;
   --second-background-color: #f2f2f2;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #323739;
   --second-text-color: #343a3c;
   --third-text-color: #5c6669;
   --fourth-text-color: #eaeced;
   --default-text-color: #373d3f;
   --border-color: #b3b3b3;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
@@ -804,14 +804,14 @@ button {
 .dark-mode {
   --background-color: #202124;
   --second-background-color: #2a2c30;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #d2d2d7;
   --second-text-color: #cbcbd1;
   --third-text-color: #9595a2;
   --fourth-text-color: #242429;
   --default-text-color: #bebec6;
   --border-color: #4a4c53;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(255,255,255,0.08);
   --shadow-color-2: rgba(255,255,255,0.05);
   --shadow-hover-color: rgba(69,69,69,0.28);
@@ -1215,14 +1215,14 @@ pre .deletion {
 :root {
   --background-color: #fff;
   --second-background-color: #f2f2f2;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #323739;
   --second-text-color: #343a3c;
   --third-text-color: #5c6669;
   --fourth-text-color: #eaeced;
   --default-text-color: #373d3f;
   --border-color: #b3b3b3;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
@@ -1253,14 +1253,14 @@ pre .deletion {
   :root {
     --background-color: #fff;
     --second-background-color: #f2f2f2;
-    --primary-color: #a39a89;
+    --primary-color: #c99;
     --first-text-color: #323739;
     --second-text-color: #343a3c;
     --third-text-color: #5c6669;
     --fourth-text-color: #eaeced;
     --default-text-color: #373d3f;
     --border-color: #b3b3b3;
-    --selection-color: #aca495;
+    --selection-color: #d1a3a3;
     --shadow-color-1: rgba(0,0,0,0.08);
     --shadow-color-2: rgba(0,0,0,0.05);
     --shadow-hover-color: rgba(0,0,0,0.28);
@@ -1292,14 +1292,14 @@ pre .deletion {
   :root {
     --background-color: #202124;
     --second-background-color: #2a2c30;
-    --primary-color: #a39a89;
+    --primary-color: #c99;
     --first-text-color: #d2d2d7;
     --second-text-color: #cbcbd1;
     --third-text-color: #9595a2;
     --fourth-text-color: #242429;
     --default-text-color: #bebec6;
     --border-color: #4a4c53;
-    --selection-color: #aca495;
+    --selection-color: #d1a3a3;
     --shadow-color-1: rgba(255,255,255,0.08);
     --shadow-color-2: rgba(255,255,255,0.05);
     --shadow-hover-color: rgba(69,69,69,0.28);
@@ -1330,14 +1330,14 @@ pre .deletion {
 .light-mode {
   --background-color: #fff;
   --second-background-color: #f2f2f2;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #323739;
   --second-text-color: #343a3c;
   --third-text-color: #5c6669;
   --fourth-text-color: #eaeced;
   --default-text-color: #373d3f;
   --border-color: #b3b3b3;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
@@ -1367,14 +1367,14 @@ pre .deletion {
 .dark-mode {
   --background-color: #202124;
   --second-background-color: #2a2c30;
-  --primary-color: #a39a89;
+  --primary-color: #c99;
   --first-text-color: #d2d2d7;
   --second-text-color: #cbcbd1;
   --third-text-color: #9595a2;
   --fourth-text-color: #242429;
   --default-text-color: #bebec6;
   --border-color: #4a4c53;
-  --selection-color: #aca495;
+  --selection-color: #d1a3a3;
   --shadow-color-1: rgba(255,255,255,0.08);
   --shadow-color-2: rgba(255,255,255,0.05);
   --shadow-hover-color: rgba(69,69,69,0.28);
@@ -1938,7 +1938,7 @@ pre .deletion {
   --waline-light-grey: #999;
   --waline-dark-grey: #666;
   --waline-theme-color: var(--primary-color);
-  --waline-active-color: #aca495;
+  --waline-active-color: #d1a3a3;
   --waline-color: #444;
   --waline-bgcolor: #fff;
   --waline-bgcolor-light: #f8f8f8;
