@@ -30,6 +30,12 @@
         <content type="html"><![CDATA[<h1 id="title1"><a href="#title1" class="headerlink" title="title1"></a>title1</h1><hr><p>text</p><h2 id="title2"><a href="#title2" class="headerlink" title="title2"></a>title2</h2><ul><li>text<ul><li>jj</li></ul></li><li>jj</li></ul><h3 id="title3"><a href="#title3" class="headerlink" title="title3"></a>title3</h3>]]></content>
       
       
+      <categories>
+          
+          <category> beta </category>
+          
+      </categories>
+      
       
         <tags>
             
