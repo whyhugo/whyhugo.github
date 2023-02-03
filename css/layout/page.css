@@ -76,4 +76,10 @@ redefine-mobile()
   position: fixed;
   bottom: 5%;
   right: $spacing-unit;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+.page-container .right-bottom-side-tools.hide {
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }

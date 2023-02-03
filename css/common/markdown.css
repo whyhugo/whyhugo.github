@@ -7,7 +7,7 @@
   border-left: 5px solid var(--default-text-color);
   margin: 20px 0;
   color: var(--default-text-color);
-  background: var(--second-background-color);
+  background: var(--third-background-color);
 }
 .markdown-body blockquote p,
 .markdown-body blockquote ul,
@@ -160,5 +160,5 @@ redefine-tablet()
   border: 1px solid var(--fourth-text-color);
 }
 .markdown-body > table tr:nth-child(2n) {
-  background-color: var(--second-background-color);
+  background-color: var(--third-background-color);
 }
