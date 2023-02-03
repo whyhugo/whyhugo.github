@@ -3,47 +3,57 @@
   box-sizing: border-box;
   width: 100%;
   height: auto;
-  background: var(--background-color);
-redefine-tablet()
+  background: var(--background-color-1);
 }
 .page-container .page-main-content {
-  padding-top: $menu-height;
   position: relative;
-redefine-tablet()
-redefine-mobile()
+  box-sizing: border-box;
+  padding-top: $header-height;
+keep-tablet()
+keep-mobile()
 }
-.menu-shrink .page-container .page-main-content {
-  padding-top: $menu-shrink-height;
-redefine-tablet()
-redefine-mobile()
+.page-container .page-main-content.is-home .transparent-1 {
+  background: var(--header-transparent-background-1);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.page-container .page-main-content.is-home .transparent-2 {
+  background: var(--header-transparent-background-2);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+.header-shrink .page-container .page-main-content {
+  padding-top: $header-shrink-height;
+keep-tablet()
+keep-mobile()
 }
 .page-container .page-main-content .page-main-content-top {
   position: fixed;
   top: 0;
   right: 0;
-  width: 100%;
-  height: $menu-height;
   z-index: $z-index-5;
   box-sizing: border-box;
-redefine-tablet()
-redefine-mobile()
+  width: 100%;
+  height: $header-height;
+keep-tablet()
+keep-mobile()
 }
 .page-container .page-main-content .page-main-content-top.hide {
   transform: translateY(-105%);
 }
-.menu-shrink .page-container .page-main-content .page-main-content-top {
-  height: $menu-shrink-height;
-redefine-tablet()
-redefine-mobile()
+.header-shrink .page-container .page-main-content .page-main-content-top {
+  height: $header-shrink-height;
+keep-tablet()
+keep-mobile()
 }
 .page-container .page-main-content .page-main-content-middle {
-  box-sizing: border-box;
-  width: 100%;
   display: flex;
   justify-content: center;
-  padding: $spacing-unit 0;
-redefine-tablet()
-redefine-mobile()
+  box-sizing: border-box;
+  width: 100%;
+  padding: $component-spacing-value 0;
+keep-tablet()
+keep-mobile()
 }
 .page-container .page-main-content .page-main-content-middle .main-content {
   position: relative;
@@ -51,35 +61,30 @@ redefine-mobile()
   width: $main-content-width;
   max-width: $content-max-width;
   height: 100%;
-redefine-tablet()
-redefine-mobile()
+keep-tablet()
+keep-mobile()
 }
-.page-container .page-main-content .page-main-content-middle .main-content.has-toc {
-  max-width: $has-toc-content-max-width !important;
+.has-toc .page-container .page-main-content .page-main-content-middle .main-content {
+  max-width: $has-toc-content-max-width;
 }
-.page-container .page-main-content .page-main-content-middle .page-main-content-bottom {
+.page-container .page-main-content .page-main-content-bottom {
   width: 100%;
 }
 .page-container .post-tools {
   position: fixed;
-  top: $menu-height$spacing-unit;
-  right: $spacing-unit;
-redefine-tablet()
-redefine-mobile()
+  top: $header-height$component-spacing-value;
+  left: calc((100vw - $content-max-width / 2) - 5rem);
+  box-sizing: border-box;
+  opacity: 0;
+keep-tablet()
+keep-mobile()
 }
-.menu-shrink .page-container .post-tools {
-  top: $menu-shrink-height$spacing-unit;
-redefine-tablet()
-redefine-mobile()
+.header-shrink .page-container .post-tools {
+  top: $header-shrink-height$component-spacing-value;
+keep-tablet()
 }
 .page-container .right-bottom-side-tools {
   position: fixed;
+  right: 0;
   bottom: 5%;
-  right: $spacing-unit;
-  opacity: 1;
-  transition: opacity 0.2s ease;
-}
-.page-container .right-bottom-side-tools.hide {
-  opacity: 0;
-  transition: opacity 0.2s ease;
 }

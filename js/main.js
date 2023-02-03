@@ -1,65 +1,74 @@
-/* global REDEFINE */
+/* global KEEP */
 
 window.addEventListener('DOMContentLoaded', () => {
+  const { version, local_search, code_block, code_copy, lazyload } = KEEP.theme_config
 
-  REDEFINE.themeInfo = {
-    theme: `Redefine v${REDEFINE.theme_config.version}`,
-    author: 'EvanNotFound',
-    repository: 'https://github.com/EvanNotFound/hexo-theme-redefine'
+  KEEP.themeInfo = {
+    theme: `Keep v${version}`,
+    author: 'XPoet',
+    repository: 'https://github.com/XPoet/hexo-theme-keep'
   }
 
-  REDEFINE.localStorageKey = 'REDEFINE-THEME-STATUS';
+  KEEP.localStorageKey = 'KEEP-THEME-STATUS'
 
-  REDEFINE.styleStatus = {
+  KEEP.styleStatus = {
     isExpandPageWidth: false,
     isDark: false,
     fontSizeLevel: 0,
-    isOpenPageAside: true
+    isShowToc: true
   }
 
   // print theme base info
-  REDEFINE.printThemeInfo = () => {
-    console.log(`      ______ __  __  ______  __    __  ______                       \r\n     \/\\__  _\/\\ \\_\\ \\\/\\  ___\\\/\\ \"-.\/  \\\/\\  ___\\                      \r\n     \\\/_\/\\ \\\\ \\  __ \\ \\  __\\\\ \\ \\-.\/\\ \\ \\  __\\                      \r\n        \\ \\_\\\\ \\_\\ \\_\\ \\_____\\ \\_\\ \\ \\_\\ \\_____\\                    \r\n         \\\/_\/ \\\/_\/\\\/_\/\\\/_____\/\\\/_\/  \\\/_\/\\\/_____\/                    \r\n                                                               \r\n ______  ______  _____   ______  ______ __  __   __  ______    \r\n\/\\  == \\\/\\  ___\\\/\\  __-.\/\\  ___\\\/\\  ___\/\\ \\\/\\ \"-.\\ \\\/\\  ___\\   \r\n\\ \\  __<\\ \\  __\\\\ \\ \\\/\\ \\ \\  __\\\\ \\  __\\ \\ \\ \\ \\-.  \\ \\  __\\   \r\n \\ \\_\\ \\_\\ \\_____\\ \\____-\\ \\_____\\ \\_\\  \\ \\_\\ \\_\\\\\"\\_\\ \\_____\\ \r\n  \\\/_\/ \/_\/\\\/_____\/\\\/____\/ \\\/_____\/\\\/_\/   \\\/_\/\\\/_\/ \\\/_\/\\\/_____\/\r\n                                                               \r\n  Github: https:\/\/github.com\/EvanNotFound\/hexo-theme-redefine`);
+  KEEP.printThemeInfo = () => {
+    console.log(
+      `\n %c ${KEEP.themeInfo.theme} %c ${KEEP.themeInfo.repository} \n`,
+      `color: #fadfa3; background: #333; padding: 6px 0;`,
+      `padding: 6px 0;`
+    )
   }
 
   // set styleStatus to localStorage
-  REDEFINE.setStyleStatus = () => {
-    localStorage.setItem(REDEFINE.localStorageKey, JSON.stringify(REDEFINE.styleStatus));
+  KEEP.setStyleStatus = () => {
+    localStorage.setItem(KEEP.localStorageKey, JSON.stringify(KEEP.styleStatus))
   }
 
   // get styleStatus from localStorage
-  REDEFINE.getStyleStatus = () => {
-    let temp = localStorage.getItem(REDEFINE.localStorageKey);
+  KEEP.getStyleStatus = () => {
+    let temp = localStorage.getItem(KEEP.localStorageKey)
     if (temp) {
-      temp = JSON.parse(temp);
-      for (let key in REDEFINE.styleStatus) {
-        REDEFINE.styleStatus[key] = temp[key];
+      temp = JSON.parse(temp)
+      for (let key in KEEP.styleStatus) {
+        KEEP.styleStatus[key] = temp[key]
       }
-      return temp;
+      return temp
     } else {
-      return null;
+      return null
     }
   }
 
-  REDEFINE.refresh = () => {
-    REDEFINE.initUtils();
-    REDEFINE.initMenuShrink();
-    REDEFINE.initModeToggle();
-    REDEFINE.initBackToTop();
+  KEEP.refresh = () => {
+    KEEP.initUtils()
+    KEEP.initHeaderShrink()
+    KEEP.initModeToggle()
+    KEEP.initBack2Top()
 
-    if (REDEFINE.theme_config.local_search.enable === true) {
-      REDEFINE.initLocalSearch();
+    if (local_search?.enable === true) {
+      KEEP.initLocalSearch()
     }
 
-    if (REDEFINE.theme_config.code_block.copy === true) {
-      REDEFINE.initCopyCode();
+    if (
+      code_block?.tools?.enable === true ||
+      code_block?.enable === true ||
+      code_copy?.enable === true
+    ) {
+      KEEP.initCodeBlockTools()
     }
 
-    if (REDEFINE.theme_config.lazyload.enable === true) {
-      REDEFINE.initLazyLoad();
+    if (lazyload?.enable === true) {
+      KEEP.initLazyLoad()
     }
   }
 
-  REDEFINE.printThemeInfo();
-  REDEFINE.refresh();
-});
+  KEEP.printThemeInfo()
+  KEEP.refresh()
+})
