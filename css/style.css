@@ -4311,12 +4311,12 @@ ul.wl-sort {
 }
 @media (max-width: 500px) {
   .home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info .home-article-category {
-    display: none;
+    display: inline;
   }
 }
 @media (max-width: 780px) {
   .home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info .home-article-tag {
-    display: none;
+    display: inline;
   }
 }
 .home-content-container .home-article-list .home-article-item .home-article-meta-info-container hr {
