@@ -3038,8 +3038,7 @@ ul.wl-sort {
   display: none !important;
 }
 .menu-wrapper {
-  font-family: "Optima Medium", sans-serif;
-  font-weight: bold;
+  font-family: "Optima Medium", Noto Sans TC Medium;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
