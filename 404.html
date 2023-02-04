@@ -378,19 +378,6 @@
             <script async  src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
-if (document.getElementById('busuanzi_container_site_uv').ownerDocument.defaultView.getComputedStyle(document.getElementById('busuanzi_container_site_uv'), null).display === 'inline') {
-    document.getElementById('busuanzi_value_site_uv') = parseInt(document.getElementById('busuanzi_value_site_uv').innerHTML) + parseInt('100000000000');
-}
-
-var int = setInterval(fixCount, 50);
-function fixCount() {
-    if (document.getElementById('busuanzi_container_site_uv').ownerDocument.defaultView.getComputedStyle(document.getElementById('busuanzi_container_site_uv'), null).display === 'inline') {
-        clearInterval(int);
-        document.getElementById('busuanzi_value_site_uv') = parseInt(document.getElementById('busuanzi_value_site_uv').innerHTML) + parseInt('100000000000');
-    }
-}
-
-
             <div class="website-count info-item">
                 
                     <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
