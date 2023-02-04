@@ -3680,14 +3680,14 @@ ul.wl-sort {
   transform: translateY(-50%);
 }
 .footer .website-count .busuanzi_container_site_pv {
-  display: block !important;
+  display: inline !important;
   font-size: 0.8rem;
 }
 .footer .website-count .busuanzi_value_site_uv {
   font-size: 1rem !important;
 }
 .footer .website-count .busuanzi_container_site_uv {
-  display: block !important;
+  display: inline !important;
   font-size: 0.8rem;
 }
 .footer .website-count .busuanzi_value_site_pv {
